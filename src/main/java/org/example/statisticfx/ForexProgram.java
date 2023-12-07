@@ -27,8 +27,8 @@ public class ForexProgram implements Runnable {
   private String minTradingDiff;
   private boolean isWindows;
 
-  private String javaHome = "\"C:\\Program Files\\Java\\jdk-20.0.1\\bin\\java.exe\"";
-  private String classpath = "C:\\Users\\allan\\IdeaProjects\\forex\\target\\classes;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-starter\\3.1.0\\spring-boot-starter-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot\\3.1.0\\spring-boot-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-context\\6.0.9\\spring-context-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-aop\\6.0.9\\spring-aop-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-beans\\6.0.9\\spring-beans-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-expression\\6.0.9\\spring-expression-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-autoconfigure\\3.1.0\\spring-boot-autoconfigure-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-starter-logging\\3.1.0\\spring-boot-starter-logging-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\ch\\qos\\logback\\logback-classic\\1.4.7\\logback-classic-1.4.7.jar;C:\\Users\\allan\\.m2\\repository\\ch\\qos\\logback\\logback-core\\1.4.7\\logback-core-1.4.7.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\logging\\log4j\\log4j-to-slf4j\\2.20.0\\log4j-to-slf4j-2.20.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\logging\\log4j\\log4j-api\\2.20.0\\log4j-api-2.20.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\slf4j\\jul-to-slf4j\\2.0.7\\jul-to-slf4j-2.0.7.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\annotation\\jakarta.annotation-api\\2.1.1\\jakarta.annotation-api-2.1.1.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-core\\6.0.9\\spring-core-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-jcl\\6.0.9\\spring-jcl-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\yaml\\snakeyaml\\1.33\\snakeyaml-1.33.jar;C:\\Users\\allan\\.m2\\repository\\org\\slf4j\\slf4j-api\\2.0.7\\slf4j-api-2.0.7.jar;C:\\Users\\allan\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.28\\lombok-1.18.28.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\commons\\commons-csv\\1.10.0\\commons-csv-1.10.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\jetbrains\\annotations\\24.0.1\\annotations-24.0.1.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\persistence\\jakarta.persistence-api\\3.1.0\\jakarta.persistence-api-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\validation\\jakarta.validation-api\\3.0.2\\jakarta.validation-api-3.0.2.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\commons\\commons-lang3\\3.12.0\\commons-lang3-3.12.0.jar";
+  private String javaHome;
+  private String classpath;
   private String springConf = "--enable-preview -XX:TieredStopAtLevel=1 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8";
   private String mainClass = "br.eti.allandemiranda.forex.ForexApplication";
 
@@ -57,7 +57,7 @@ public class ForexProgram implements Runnable {
       final String mondayStart, final String mondayEnd,
       final String tuesdayStart, final String tuesdayEnd, final String wednesdayStart, final String wednesdayEnd, final String thursdayStart, final String thursdayEnd,
       final String fridayStart, final String fridayEnd,
-      final String minTradingDiff, final boolean isWindows) {
+      final String minTradingDiff, final boolean isWindows, final String javaHome, final String classpath) {
     this.inputFile = inputFile;
     this.outputFolder = outputFolder;
     this.fileName = fileName;
@@ -78,6 +78,8 @@ public class ForexProgram implements Runnable {
     this.stopLoss = stopLoss;
     this.minTradingDiff = minTradingDiff;
     this.isWindows = isWindows;
+    this.javaHome = javaHome;
+    this.classpath = classpath;
   }
 
   @Override
