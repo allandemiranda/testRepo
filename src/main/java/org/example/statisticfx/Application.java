@@ -2,10 +2,10 @@ package org.example.statisticfx;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -97,7 +97,7 @@ public class Application {
     parameters.addAll(parametersListH1);
     parameters.addAll(parametersListH2);
     parameters.addAll(parametersListD1);
-    final List<Object[]> listTime = IntStream.range(0, startTime.size()).mapToObj(i -> new SimpleEntry(startTime.get(i), endTime.get(i))).flatMap(time -> parameters.stream().map(objects -> new Object[]{objects[0], objects[1], objects[2], objects[3], objects[4], objects[5], time.getKey(), time.getValue()})).toList();
+    final List<Object[]> listTime = IntStream.range(0, startTime.size()).mapToObj(i -> new SimpleEntry(startTime.get(i).format(DateTimeFormatter.ISO_TIME), endTime.get(i).format(DateTimeFormatter.ISO_TIME))).flatMap(time -> parameters.stream().map(objects -> new Object[]{objects[0], objects[1], objects[2], objects[3], objects[4], objects[5], time.getKey(), time.getValue()})).toList();
 
     final List<DayOfWeek> dayOfWeeks = Arrays.stream(DayOfWeek.values()).filter(dayOfWeek -> !(DayOfWeek.SATURDAY.equals(dayOfWeek) || DayOfWeek.SUNDAY.equals(dayOfWeek))).toList();
     final List<SimpleEntry<DayOfWeek, Object[]>> allScenarios = listTime.stream().flatMap(scenario -> dayOfWeeks.stream().map(dayOfWeek -> new SimpleEntry<>(dayOfWeek, scenario))).toList();
@@ -108,17 +108,17 @@ public class Application {
         "file:c:/Users/allan/OneDrive/Documentos/FX/EURUSD_202307030007_202307282358.csv",
         "file:c:/Users/allan/OneDrive/Documentos/FX/STATISTIC/",
         String.valueOf(i),
-        (String) allScenarios.get(i).getValue()[0],
-        (String) allScenarios.get(i).getValue()[1],
-        (String) allScenarios.get(i).getValue()[2],
-        (String) allScenarios.get(i).getValue()[3],
-        (String) allScenarios.get(i).getValue()[4],
+        String.valueOf(allScenarios.get(i).getValue()[0]),
+        String.valueOf(allScenarios.get(i).getValue()[1]),
+        String.valueOf(allScenarios.get(i).getValue()[2]),
+        String.valueOf(allScenarios.get(i).getValue()[3]),
+        String.valueOf(allScenarios.get(i).getValue()[4]),
         allScenarios.get(i).getKey().equals(DayOfWeek.MONDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.MONDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.TUESDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.TUESDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.WEDNESDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.WEDNESDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
-        (String) allScenarios.get(i).getValue()[5], true)).map(forexProgram -> {
+        String.valueOf(allScenarios.get(i).getValue()[5]), true)).map(forexProgram -> {
       Thread thread = new Thread(forexProgram, forexProgram.getFileName());
       thread.start();
       return thread;
