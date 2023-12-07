@@ -20,10 +20,10 @@ public class Application {
 
     //M1
     String[] onlyStrongM1 = new String[]{"true", "false"};
-    Integer[] spreadM1 = new Integer[]{5, 10, 12, 15};
-    Integer[] tpM1 = new Integer[]{20, 30, 40, 50};
-    Integer[] slM1 = new Integer[]{19, 30};
-    Integer[] tradingM1 = new Integer[]{-1, 10, 30, 60, 90};
+    Integer[] spreadM1 = new Integer[]{5};
+    Integer[] tpM1 = new Integer[]{20};
+    Integer[] slM1 = new Integer[]{10};
+    Integer[] tradingM1 = new Integer[]{-1, 10, 50};
 
     final List<Object[]> parametersListM1 = Arrays.stream(onlyStrongM1).flatMap(os -> Arrays.stream(spreadM1).flatMap(s -> Arrays.stream(tpM1)
         .flatMap(tp -> Arrays.stream(slM1).filter(sl -> sl < tp).flatMap(sl -> Arrays.stream(tradingM1).map(t -> new Object[]{"M1", os, s, tp, sl, t, "", ""}))))).toList();
@@ -104,7 +104,7 @@ public class Application {
 
     System.out.println("Generated " + listTime.size() + " scenarios");
 
-    IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(
+    final List<Thread> threads = IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(
         "file:c:/Users/allan/OneDrive/Documentos/FX/EURUSD_202307030007_202307282358.csv",
         "file:c:/Users/allan/OneDrive/Documentos/FX/STATISTIC/",
         String.valueOf(i),
@@ -119,30 +119,16 @@ public class Application {
         allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         String.valueOf(allScenarios.get(i).getValue()[5]), true)).map(forexProgram -> {
-      Thread thread = new Thread(forexProgram, forexProgram.getFileName());
-      thread.start();
-      return thread;
-    }).forEach(thread -> {
+      return new Thread(forexProgram, forexProgram.getFileName());
+    }).toList();
+    threads.parallelStream().forEach(Thread::start);
+    threads.forEach(thread -> {
       try {
         thread.join();
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
     });
-
-//    ForexProgram forexProgram = new ForexProgram(
-//        "file:c:/Users/allan/OneDrive/Documentos/FX/EURUSD_202307030007_202307282358.csv",
-//        "file:c:/Users/allan/OneDrive/Documentos/FX/STATISTIC/",
-//        "test",
-//        "M30",
-//        "false",
-//        "12",
-//        "150",
-//        "100",
-//        "00:00:00", "23:59:59",
-//    "00:00:00", "23:59:59", "00:00:00", "23:59:59", "00:00:00", "23:59:59",
-//    "00:00:00", "23:59:59",
-//    "-1", true);
 
     System.out.println("END!");
   }
