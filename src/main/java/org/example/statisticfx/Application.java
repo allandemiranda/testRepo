@@ -104,7 +104,7 @@ public class Application {
 
     System.out.println("Generated " + listTime.size() + " scenarios");
 
-    final List<Thread> threads = IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(
+    IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(
         "file:c:/Users/allan/OneDrive/Documentos/FX/EURUSD_202307030007_202307282358.csv",
         "file:c:/Users/allan/OneDrive/Documentos/FX/STATISTIC/",
         String.valueOf(i),
@@ -118,11 +118,12 @@ public class Application {
         allScenarios.get(i).getKey().equals(DayOfWeek.WEDNESDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.WEDNESDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
         allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[6] : "00:00:01", allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[7] : "00:00:00",
-        String.valueOf(allScenarios.get(i).getValue()[5]), true)).map(forexProgram -> {
-      return new Thread(forexProgram, forexProgram.getFileName());
-    }).toList();
-    threads.parallelStream().forEach(Thread::start);
-    threads.forEach(thread -> {
+        String.valueOf(allScenarios.get(i).getValue()[5]),
+        true)).parallel().map(forexProgram -> {
+      Thread thread = new Thread(forexProgram, forexProgram.getFileName());
+      thread.start();
+      return thread;
+    }).forEach(thread -> {
       try {
         thread.join();
       } catch (InterruptedException e) {
