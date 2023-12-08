@@ -38,10 +38,12 @@ public class Application {
 //    final String javaHome = "\"C:\\Program Files\\Java\\jdk-20.0.1\\bin\\java.exe\"";
 //    final String classpath = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\forex-0.0.1-SNAPSHOT\\classes;C:\\Users\\allan\\OneDrive\\Documentos\\FX\\forex-0.0.1-SNAPSHOT\\lib\\*";
 
-    final String inputFile = args[1];
-    final String outputFolder = args[2];
-    final String javaHome = args[3];
-    final String classpath = args[4];
+    Arrays.stream(args).forEach(s -> System.out.println(s));
+
+    final String inputFile = args[0];
+    final String outputFolder = args[1];
+    final String javaHome = "java";
+    final String classpath = args[2];
     System.out.println("Generating scenarios");
 
     final LocalTime zeroTime = LocalTime.of(0, 0, 0);
