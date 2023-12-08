@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 public class Concatenar {
 
   public static void main(String[] args) {
-    final String outputFolder = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\STATISTIC";
+    final String outputFolder = "C:\\Users\\allan\\OneDrive\\Documentos\\FX";
     File folder = new File(outputFolder);
     File endFile = new File(outputFolder, "allStatistic.csv");
 

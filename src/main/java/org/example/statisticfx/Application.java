@@ -44,6 +44,7 @@ public class Application {
     final String outputFolder = args[1];
     final String javaHome = "java";
     final String classpath = args[2];
+    final String outputFileFinal = args[3];
     System.out.println("Generating scenarios");
 
     final LocalTime zeroTime = LocalTime.of(0, 0, 0);
