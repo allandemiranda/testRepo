@@ -44,7 +44,7 @@ public class Application {
     final String outputFolder = args[1];
     final String javaHome = "java";
     final String classpath = args[2];
-    final String outputFileFinal = args[3];
+    final String outputFolderFinal = args[3];
     System.out.println("Generating scenarios");
 
     final LocalTime zeroTime = LocalTime.of(0, 0, 0);
@@ -176,7 +176,8 @@ public class Application {
     System.out.println("Merging files...");
 
     File folder = new File(outputFolder);
-    File endFile = new File(outputFolder, "allStatistic.csv");
+    File endFolderFim = new File (outputFolderFinal);
+    File endFile = new File(endFolderFim, "allStatistic.csv");
 
     try (final FileWriter fileWriter = new FileWriter(endFile)) {
       fileWriter.write(
