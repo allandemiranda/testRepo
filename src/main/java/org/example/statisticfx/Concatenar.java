@@ -19,7 +19,7 @@ public class Concatenar {
 
     try (final FileWriter fileWriter = new FileWriter(endFile)) {
       fileWriter.write(
-          "*TIME FRAME\t*SLOT OPEN\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\n");
+          "*TIME FRAME\t*SLOT OPEN\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\tFINAL BALANCE\n");
       Arrays.stream(folder.listFiles()).map(file -> {
         try (final FileReader fileReader = new FileReader(file); final BufferedReader bufferreader = new BufferedReader(fileReader)) {
           return StreamSupport.stream(bufferreader.lines().spliterator(), false).toList();
