@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
@@ -30,6 +31,7 @@ public class Application {
   private static final String TIME_START = "00:00:01";
   private static final String TIME_END = "00:00:00";
   private static final String D_1 = "D1";
+  public static final String LINE_BREAK = "\n";
 
   public static void main(String[] args) {
 
@@ -181,17 +183,17 @@ public class Application {
 
     try (final FileWriter fileWriter = new FileWriter(endFile)) {
       fileWriter.write(
-          "*TIME FRAME\t*SLOT OPEN\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\tFINAL BALANCE\n");
-      Arrays.stream(folder.listFiles()).map(file -> {
-        try (final FileReader fileReader = new FileReader(file); final BufferedReader bufferreader = new BufferedReader(fileReader)) {
-          return StreamSupport.stream(bufferreader.lines().spliterator(), false).toList();
+          "*TIME FRAME\t*SLOT OPEN DAY\t*SLOT OPEN TIME\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tWIN\tLOSE\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\tFINAL BALANCE\n");
+      Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(file -> {
+        try (final FileReader fileReader = new FileReader(file); final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+          return StreamSupport.stream(bufferedReader.lines().spliterator(), false).toList();
         } catch (IOException e) {
 
           throw new RuntimeException(e);
         }
       }).flatMap(Collection::stream).filter(s -> !(s.isBlank() || s.isEmpty())).forEach(line -> {
         try {
-          fileWriter.write(line.concat("\n"));
+          fileWriter.write(line.concat(LINE_BREAK));
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
