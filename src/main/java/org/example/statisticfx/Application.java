@@ -37,16 +37,15 @@ public class Application {
 
 //    final String inputFile = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\EURUSD_202306190007_202308182357.csv";
 //    final String outputFolder = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\STATISTIC";
-//    final String javaHome = "\"C:\\Program Files\\Java\\jdk-20.0.1\\bin\\java.exe\"";
+    final String javaHome = "\"C:\\Program Files\\Java\\jdk-20.0.1\\bin\\java.exe\"";
 //    final String classpath = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\forex-0.0.1-SNAPSHOT\\classes;C:\\Users\\allan\\OneDrive\\Documentos\\FX\\forex-0.0.1-SNAPSHOT\\lib\\*";
 
     Arrays.stream(args).forEach(s -> System.out.println(s));
 
     final String inputFile = args[0];
     final String outputFolder = args[1];
-    final String javaHome = "java";
+//    final String javaHome = "java";
     final String classpath = args[2];
-    final String outputFolderFinal = args[3];
     System.out.println("Generating scenarios");
 
     final LocalTime zeroTime = LocalTime.of(0, 0, 0);
@@ -133,9 +132,9 @@ public class Application {
     final List<Object[]> parameters = new ArrayList<>();
 //    parameters.addAll(parametersListM1);
 //    parameters.addAll(parametersListM5);
+    parameters.addAll(parametersListM15);
     parameters.addAll(parametersListM30);
     parameters.addAll(parametersListH1);
-    parameters.addAll(parametersListM15);
     parameters.addAll(parametersListH2);
     parameters.addAll(parametersListD1);
     final List<Object[]> listTime = IntStream.range(0, startTime.size())
@@ -175,32 +174,6 @@ public class Application {
       }
     });
 
-    System.out.println("Merging files...");
-
-    File folder = new File(outputFolder);
-    File endFolderFim = new File (outputFolderFinal);
-    File endFile = new File(endFolderFim, "allStatistic.csv");
-
-    try (final FileWriter fileWriter = new FileWriter(endFile)) {
-      fileWriter.write(
-          "*TIME FRAME\t*SLOT OPEN DAY\t*SLOT OPEN TIME\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tWIN\tLOSE\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\tFINAL BALANCE\n");
-      Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(file -> {
-        try (final FileReader fileReader = new FileReader(file); final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-          return StreamSupport.stream(bufferedReader.lines().spliterator(), false).toList();
-        } catch (IOException e) {
-
-          throw new RuntimeException(e);
-        }
-      }).flatMap(Collection::stream).filter(s -> !(s.isBlank() || s.isEmpty())).forEach(line -> {
-        try {
-          fileWriter.write(line.concat(LINE_BREAK));
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      });
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
     System.out.println("END!");
   }
 }
