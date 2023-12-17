@@ -1,44 +1,14 @@
 package br.eti.allandemiranda;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.stream.StreamSupport;
-
 public class Statistic {
 
-  public static final String LINE_BREAK = "\n";
-
   public static void main(String[] args) {
-    final String outputFolder = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\STATISTIC";
-    final String outputFile = "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\";
-    File folder = new File(outputFolder);
-    File endFile = new File(outputFile, "allStatistic.csv");
+    int[] trading = new int[]{-1, 50, 100};
+    int[] spread = new int[]{5, 10, 12, 15};
+    int[] sl = new int[]{20, 50, 100, 150, 200, 300};
+    int[] tp = new int[]{50, 100, 150, 200, 250, 500};
 
-    try (final FileWriter fileWriter = new FileWriter(endFile)) {
-      fileWriter.write(
-          "*TIME FRAME\t*SLOT OPEN DAY\t*SLOT OPEN TIME\t*TP\t*SL\t*MAX SPREAD\t*MIN TRADING\t*ONLY STRONG\tWIN %\tWIN\tLOSE\tTOTAL POSITION\tCONSISTENCE %\tNUMBER OF BAR\tLOW POINT\tHIGH POINT\tFINAL BALANCE\n");
-      Arrays.stream(Objects.requireNonNull(folder.listFiles())).map(file -> {
-        try (final FileReader fileReader = new FileReader(file); final BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-          return StreamSupport.stream(bufferedReader.lines().spliterator(), false).toList();
-        } catch (IOException e) {
-
-          throw new RuntimeException(e);
-        }
-      }).flatMap(Collection::stream).filter(s -> !(s.isBlank() || s.isEmpty())).forEach(line -> {
-        try {
-          fileWriter.write(line.concat(LINE_BREAK));
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      });
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    OneHourRun oneHourRun = new OneHourRun("C:\\Users\\allan\\OneDrive\\Documentos\\FX\\EURUSD_202306190007_202308182357.csv", "C:\\Users\\allan\\OneDrive\\Documentos\\FX\\STATISTIC", "H1", "true", "\"C:\\Program Files\\Java\\jdk-20.0.1\\bin\\java.exe\"", "C:\\Users\\allan\\IdeaProjects\\forex\\target\\classes;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-starter\\3.1.0\\spring-boot-starter-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot\\3.1.0\\spring-boot-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-context\\6.0.9\\spring-context-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-aop\\6.0.9\\spring-aop-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-beans\\6.0.9\\spring-beans-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-expression\\6.0.9\\spring-expression-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-autoconfigure\\3.1.0\\spring-boot-autoconfigure-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\boot\\spring-boot-starter-logging\\3.1.0\\spring-boot-starter-logging-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\ch\\qos\\logback\\logback-classic\\1.4.7\\logback-classic-1.4.7.jar;C:\\Users\\allan\\.m2\\repository\\ch\\qos\\logback\\logback-core\\1.4.7\\logback-core-1.4.7.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\logging\\log4j\\log4j-to-slf4j\\2.20.0\\log4j-to-slf4j-2.20.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\logging\\log4j\\log4j-api\\2.20.0\\log4j-api-2.20.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\slf4j\\jul-to-slf4j\\2.0.7\\jul-to-slf4j-2.0.7.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\annotation\\jakarta.annotation-api\\2.1.1\\jakarta.annotation-api-2.1.1.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-core\\6.0.9\\spring-core-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\springframework\\spring-jcl\\6.0.9\\spring-jcl-6.0.9.jar;C:\\Users\\allan\\.m2\\repository\\org\\yaml\\snakeyaml\\1.33\\snakeyaml-1.33.jar;C:\\Users\\allan\\.m2\\repository\\org\\slf4j\\slf4j-api\\2.0.7\\slf4j-api-2.0.7.jar;C:\\Users\\allan\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.28\\lombok-1.18.28.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\commons\\commons-csv\\1.10.0\\commons-csv-1.10.0.jar;C:\\Users\\allan\\.m2\\repository\\org\\jetbrains\\annotations\\24.0.1\\annotations-24.0.1.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\persistence\\jakarta.persistence-api\\3.1.0\\jakarta.persistence-api-3.1.0.jar;C:\\Users\\allan\\.m2\\repository\\jakarta\\validation\\jakarta.validation-api\\3.0.2\\jakarta.validation-api-3.0.2.jar;C:\\Users\\allan\\.m2\\repository\\org\\apache\\commons\\commons-lang3\\3.12.0\\commons-lang3-3.12.0.jar", tp, sl, trading, spread);
+    oneHourRun.run();
   }
 }
