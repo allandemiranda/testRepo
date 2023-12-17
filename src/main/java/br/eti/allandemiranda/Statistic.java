@@ -1,4 +1,4 @@
-package org.example.statisticfx;
+package br.eti.allandemiranda;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
-public class Concatenar {
+public class Statistic {
 
   public static final String LINE_BREAK = "\n";
 

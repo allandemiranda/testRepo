@@ -1,22 +1,15 @@
-package org.example.statisticfx;
+package br.eti.allandemiranda;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 
+//! DESCONTINUADO
 public class Application {
 
   private static final String TRUE = "true";
@@ -76,10 +69,10 @@ public class Application {
 //
     //M15
     String[] onlyStrongM15 = new String[]{TRUE, FALSE};
-    Integer[] spreadM15 = new Integer[]{5, 10, 12, 15};
+    Integer[] spreadM15 = new Integer[]{5, 10};
     Integer[] tpM15 = new Integer[]{50, 70, 90, 100, 120, 150};
     Integer[] slM15 = new Integer[]{20, 50, 100};
-    Integer[] tradingM15 = new Integer[]{-1, 50, 100};
+    Integer[] tradingM15 = new Integer[]{-1, 50};
 
     final List<Object[]> parametersListM15 = Arrays.stream(onlyStrongM15).flatMap(os -> Arrays.stream(spreadM15).flatMap(s -> Arrays.stream(tpM15)
             .flatMap(tp -> Arrays.stream(slM15).filter(sl -> sl < tp).flatMap(sl -> Arrays.stream(tradingM15).map(t -> new Object[]{M_15, os, s, tp, sl, t, EMPTY, EMPTY})))))
@@ -87,7 +80,7 @@ public class Application {
 
     //M30
     String[] onlyStrongM30 = new String[]{TRUE, FALSE};
-    Integer[] spreadM30 = new Integer[]{5, 10, 12, 15};
+    Integer[] spreadM30 = new Integer[]{5, 10};
     Integer[] tpM30 = new Integer[]{50, 100, 150, 200};
     Integer[] slM30 = new Integer[]{20, 50, 100, 120};
     Integer[] tradingM30 = new Integer[]{-1, 50, 100};
@@ -120,10 +113,10 @@ public class Application {
 
     //D1
     String[] onlyStrongD1 = new String[]{TRUE, FALSE};
-    Integer[] spreadD1 = new Integer[]{5, 10, 12, 15};
-    Integer[] tpD1 = new Integer[]{50, 100, 150, 200, 250, 500};
-    Integer[] slD1 = new Integer[]{20, 50, 100, 150, 200, 300};
-    Integer[] tradingD1 = new Integer[]{-1, 50, 100};
+    Integer[] spreadD1 = new Integer[]{50};
+    Integer[] tpD1 = new Integer[]{500, 800, 1000, 2000};
+    Integer[] slD1 = new Integer[]{100, 200};
+    Integer[] tradingD1 = new Integer[]{50};
 
     final List<Object[]> parametersListD1 = Arrays.stream(onlyStrongD1).flatMap(os -> Arrays.stream(spreadD1).flatMap(s -> Arrays.stream(tpD1)
             .flatMap(tp -> Arrays.stream(slD1).filter(sl -> sl < tp).flatMap(sl -> Arrays.stream(tradingD1).map(t -> new Object[]{D_1, os, s, tp, sl, t, EMPTY, EMPTY})))))
@@ -149,8 +142,14 @@ public class Application {
 
     System.out.println("Generated " + listTime.size() + " scenarios");
 
-    IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(inputFile, outputFolder, String.valueOf(i), String.valueOf(allScenarios.get(i).getValue()[0]),
-        String.valueOf(allScenarios.get(i).getValue()[1]), String.valueOf(allScenarios.get(i).getValue()[2]), String.valueOf(allScenarios.get(i).getValue()[3]),
+    IntStream.range(0, allScenarios.size()).mapToObj(i -> new ForexProgram(
+        inputFile,
+        outputFolder,
+        String.valueOf(i),
+        String.valueOf(allScenarios.get(i).getValue()[0]),
+        String.valueOf(allScenarios.get(i).getValue()[1]),
+        String.valueOf(allScenarios.get(i).getValue()[2]),
+        String.valueOf(allScenarios.get(i).getValue()[3]),
         String.valueOf(allScenarios.get(i).getValue()[4]),
         allScenarios.get(i).getKey().equals(DayOfWeek.MONDAY) ? (String) allScenarios.get(i).getValue()[6] : TIME_START,
         allScenarios.get(i).getKey().equals(DayOfWeek.MONDAY) ? (String) allScenarios.get(i).getValue()[7] : TIME_END,
@@ -161,8 +160,11 @@ public class Application {
         allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[6] : TIME_START,
         allScenarios.get(i).getKey().equals(DayOfWeek.THURSDAY) ? (String) allScenarios.get(i).getValue()[7] : TIME_END,
         allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[6] : TIME_START,
-        allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[7] : TIME_END, String.valueOf(allScenarios.get(i).getValue()[5]),
-        true, javaHome, classpath)).parallel().map(forexProgram -> {
+        allScenarios.get(i).getKey().equals(DayOfWeek.FRIDAY) ? (String) allScenarios.get(i).getValue()[7] : TIME_END,
+        String.valueOf(allScenarios.get(i).getValue()[5]),
+        javaHome,
+        classpath
+    )).parallel().map(forexProgram -> {
       Thread thread = new Thread(forexProgram, forexProgram.getFileName());
       thread.start();
       return thread;
