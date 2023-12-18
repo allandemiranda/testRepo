@@ -18,7 +18,6 @@ public class OneHourRun implements Runnable {
   private final String inputFile;
   private final String outputFolder;
   private final String timeFrame;
-  private final String isOpenOnlyStrong;
   private final String javaHome;
   private final String classpath;
 
@@ -33,6 +32,8 @@ public class OneHourRun implements Runnable {
     final List<LocalTime> endTime = IntStream.range(1, 24).mapToObj(ZERO_TIME::plusHours).map(localTime -> localTime.minusSeconds(1)).toList();
     final List<SimpleEntry<LocalTime, LocalTime>> pairTime = IntStream.range(0, startTime.size()).mapToObj(i -> new SimpleEntry<>(startTime.get(i), endTime.get(i))).toList();
     final List<SimpleEntry<DayOfWeek, SimpleEntry<LocalTime, LocalTime>>> pairWeek = Arrays.stream(DayOfWeek.values()).flatMap(dayOfWeek -> pairTime.stream().map(pair -> new SimpleEntry<>(dayOfWeek, pair))).toList();
-    pairWeek.forEach(time -> new Algorithm(this.getInputFile(), this.getOutputFolder(), this.getTimeFrame(), this.getIsOpenOnlyStrong(), this.getJavaHome(), this.getClasspath(), time, this.getTp(), this.getSl(), this.getTrading(), this.getSpread()).run());
+    pairWeek.forEach(
+        time -> new Algorithm(this.getInputFile(), this.getOutputFolder(), this.getTimeFrame(), this.getJavaHome(), this.getClasspath(), time, this.getTp(), this.getSl(), this.getTrading(),
+            this.getSpread()).run());
   }
 }
